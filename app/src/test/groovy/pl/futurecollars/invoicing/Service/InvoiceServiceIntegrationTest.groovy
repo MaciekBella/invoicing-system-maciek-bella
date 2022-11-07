@@ -41,7 +41,7 @@ class InvoiceServiceIntegrationTest extends Specification {
         service.getAll().isEmpty()
     }
 
-    def "should get all returns all invoices in the database, deleted invoice is not returned"() {
+    def "should receive all returns all invoices in the database, deleted invoice is not returned"() {
         given:
         invoices.forEach({ service.save(it) })
 
