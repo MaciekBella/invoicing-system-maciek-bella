@@ -4,6 +4,7 @@
 
 package pl.futurecollars.invoicing;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +29,7 @@ public class App {
     InvoiceService service = new InvoiceService(db);
 
     Company buyer = new Company("5296472303", "ul. Lączna 43 03-156 Lipinki, Polska", "RW INVEST Sp. z o.o");
-    Company seller = new Company("252-134-26-00", "32-005 Zielona Góra, Kaszkietowa 19", "Jadwiga Hymel Development");
+    Company seller = new Company("2521342600", "32-005 Zielona Góra, Kaszkietowa 19", "CD-Project");
 
     List<InvoiceEntry> products = List.of(new InvoiceEntry("Programming course", BigDecimal.valueOf(10000), BigDecimal.valueOf(2300), Vat.VAT_23));
 

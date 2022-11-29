@@ -18,6 +18,10 @@ plugins {
     id 'jacoco'
 }
 
+jacoco {
+    toolVersion = "0.8.6"
+}
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
@@ -50,9 +54,16 @@ application {
     mainClass = 'pl.futurecollars.invoicing.App'
 }
 
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
+test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+check {
+    finalizedBy jacocoTestCoverageVerification
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
 }
 
 checkstyle {
@@ -67,14 +78,14 @@ jacocoTestCoverageVerification {
         rule {
             limit {
                 counter = 'BRANCH'
-                minimum = 0.9
+                minimum = 0.4
             }
         }
 
         rule {
             limit {
                 counter = 'LINE'
-                minimum = 0.9
+                minimum = 0.4
             }
         }
     }

@@ -73,11 +73,11 @@ public class FileBasedDatabase implements DataBase {
       }
 
       invoice.setId(id);
-      invoices.add(jsonService.toJson(invoice));
+      listWithoutInvoice.add(jsonService.toJson(invoice));
 
-      filesService.writeToFile(path, String.valueOf(listWithoutInvoice));
+      filesService.writeToFile(path, String.join(",", listWithoutInvoice));
     } catch (IOException e) {
-      throw new RuntimeException("Failed to update" + id, e);
+      throw new RuntimeException("Failed to update " + id, e);
     }
   }
 

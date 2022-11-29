@@ -7,8 +7,8 @@ import java.nio.file.Path
 
 class FileServiceTest extends Specification {
 
-    private FileService fileService = new FileService();
-    private Path path = Path.of("app/src/test/resources/lineTest.txt")
+    private FileService fileService = new FileService()
+    private Path path = Path.of("C:\\Users\\macie\\Documents\\Projects\\invoicing-system-maciek-bella\\app\\src\\test\\resources\\lineTest.txt")
 
     def cleanup() {
         Files.write(path, [])
@@ -30,14 +30,12 @@ class FileServiceTest extends Specification {
     def "should line is correctly written to file"() {
 
         given:
-        fileService.writeToFile(path, "1")
         fileService.writeToFile(path, "2")
 
         when:
         def result = Files.readAllLines(path)
 
         then:
-        ["1"] == result
         ["2"] == result
     }
 

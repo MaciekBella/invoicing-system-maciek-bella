@@ -7,7 +7,7 @@ import spock.lang.Specification
 
 class JsonServiceTest extends Specification {
 
-    JsonService jsonService = new JsonService();
+    JsonService jsonService = new JsonService()
 
     def "convert object to json "() {
         given:
@@ -26,6 +26,7 @@ class JsonServiceTest extends Specification {
         def result = jsonService.toObject(invoiceInJson, Invoice.class)
         then:
         def exception = thrown(RuntimeException)
+        exception.message == "Cannot parse json"
     }
 
     def "Should map json to object"() {
