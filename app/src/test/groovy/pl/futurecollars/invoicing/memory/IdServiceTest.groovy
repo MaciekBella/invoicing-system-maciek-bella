@@ -12,8 +12,8 @@ import java.nio.file.Path
 
 class IdServiceTest extends Specification {
 
-    Path nextIdDbPath = Path.of("C:\\Users\\macie\\Documents\\Projects\\invoicing-system-maciek-bella\\app\\src\\test\\resources\\idTestFile.txt")
-    Path wrongPath = Path.of("C:\\Users\\macie\\Documents\\Projects\\invoicing-syste\\app\\src\\test\\resources\\idTestFile.txt")
+    Path nextIdDbPath = Path.of("C:\\Users\\macie\\Documents\\Projects\\invoicing-system-maciek-bella\\app\\src\\test\\resources\\idTest.txt")
+    Path wrongPath = Path.of("C:\\Users\\macie\\Documents\\Projects\\invoicing-syste\\app\\src\\test\\resources\\idTest.txt")
 //    Path wrong = Path.of("C:\\Users\\macie\\Documents\\Projects\\invoicing-system-maciek-bella\\app\\src\\test\\resources\\idTest.json")
     FileService fileService = new FileService()
 

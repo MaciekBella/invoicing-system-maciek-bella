@@ -8,7 +8,7 @@ import java.nio.file.Path
 class FileServiceTest extends Specification {
 
     private FileService fileService = new FileService()
-    private Path path = Path.of("app/src/test/resources/lineTest.txt")
+    private Path path = Path.of("C:\\Users\\macie\\Documents\\Projects\\invoicing-system-maciek-bella\\app\\src\\test\\resources\\lineTest.txt")
 
     def cleanup() {
         Files.write(path, [])
