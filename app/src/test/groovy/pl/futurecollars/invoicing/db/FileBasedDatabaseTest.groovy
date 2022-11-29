@@ -4,14 +4,13 @@ import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.utils.FileService
 import pl.futurecollars.invoicing.utils.JsonService
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 
-@Ignore
+
 class FileBasedDatabaseTest extends Specification {
 
     Path idPath = Path.of("C:\\Users\\macie\\Documents\\Projects\\invoicing-system-maciek-bella\\app\\src\\test\\resources\\idTestFile.txt")
@@ -45,21 +44,6 @@ class FileBasedDatabaseTest extends Specification {
         ex.message == "Database failed to save invoice"
     }
 
-    def "should get invoice by id"() {
-        given:
-        fileBased.save(invoice)
-
-        when:
-        def result = fileBased.getById(1)
-
-        then:
-        def invoiceResult = result.get()
-        invoiceResult.id == 1
-        invoiceResult.buyer.name == invoice.buyer.name
-        invoiceResult.buyer.address == invoice.buyer.address
-        invoiceResult.buyer.taxIdentificationNumber == invoice.buyer.taxIdentificationNumber
-    }
-
     def "should throw exception with id error"() {
         when:
         wrongFileDataBase.getById(1)
@@ -70,19 +54,6 @@ class FileBasedDatabaseTest extends Specification {
         exception.cause.class == NoSuchFileException
     }
 
-    def "should update invoice"() {
-        given:
-        fileBased.save(invoice)
-
-        when:
-        fileBased.update(1, updateInvoice)
-        def result = fileBased.getById(1)
-
-        then:
-        result.isPresent()
-        result.get().id == 1
-
-    }
 
     def "should throw an exception with no existing invoice ID"() {
         when:
