@@ -1,5 +1,6 @@
 package pl.futurecollars.invoicing.utils
 
+import lombok.Generated
 import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
