@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
-import lombok.Generated;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.utils.FileService;
 import pl.futurecollars.invoicing.utils.JsonService;
 
-@Generated
 @AllArgsConstructor
 public class FileBasedDatabase implements DataBase {
 

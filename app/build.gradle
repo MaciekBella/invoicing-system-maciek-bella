@@ -85,18 +85,6 @@ check {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
-
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude:
-                    ['pl/futurecollars/invoicing/controller/InvoiceController.class',
-                    'pl/futurecollars/invoicing/InvoiceApplication.class',
-                    'pl/futurecollars/invoicing/db/FileBasedDatabase.class',
-                    'pl/futurecollars/invoicing/db/IdService.class',
-                    'pl/futurecollars/invoicing/utils/JsonService.class',
-                    'pl/futurecollars/invoicing/utils/FileService.class'])
-        }))
-    }
 }
 
 checkstyle {
@@ -107,6 +95,15 @@ checkstyle {
 }
 
 jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude:
+                    ['pl/futurecollars/invoicing/controller/InvoiceController.class',
+                     'pl/futurecollars/invoicing/db/FileBasedDatabase.class',
+                     'pl/futurecollars/invoicing/db/IdService.class',
+                     'pl/futurecollars/invoicing/utils/FileService.class'])
+        }))
+    }
     violationRules {
         rule {
             limit {
