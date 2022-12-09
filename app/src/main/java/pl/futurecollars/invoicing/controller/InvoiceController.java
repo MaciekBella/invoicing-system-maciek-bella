@@ -33,7 +33,7 @@ public class InvoiceController {
     return invoiceService.getAll();
   }
 
-  @GetMapping("/invoice")
+  @GetMapping("/invoice/{id}")
   public Optional<Invoice> getById(@PathVariable long id) {
     return invoiceService.getById(id);
   }
