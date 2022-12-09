@@ -3,10 +3,8 @@ package pl.futurecollars.invoicing.db;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import lombok.Generated;
 import pl.futurecollars.invoicing.utils.FileService;
 
-@Generated
 public class IdService {
 
   private final Path path;
