@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import pl.futurecollars.invoicing.db.DataBase;
-import pl.futurecollars.invoicing.db.memory.InMemoryDataBase;
+import pl.futurecollars.invoicing.db.InMemoryDataBase;
 import pl.futurecollars.invoicing.model.Company;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.model.InvoiceEntry;
