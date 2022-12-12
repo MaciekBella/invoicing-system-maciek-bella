@@ -98,9 +98,10 @@ jacocoTestCoverageVerification {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude:
+
                     ['pl/futurecollars/invoicing/controller/InvoiceController.class',
-                     'pl/futurecollars/invoicing/db/FileBasedDatabase.class',
-                     'pl/futurecollars/invoicing/db/IdService.class',
+                     'pl/futurecollars/invoicing/db/file/FileBasedDatabase.class',
+                     'pl/futurecollars/invoicing/db/fileIdService.class',
                      'pl/futurecollars/invoicing/utils/FileService.class'])
         }))
     }
