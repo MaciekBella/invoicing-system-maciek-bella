@@ -23,6 +23,11 @@ public class InvoiceController {
     this.invoiceService = invoiceService;
   }
 
+  @GetMapping("/hello")
+  public String helloWorld() {
+    return "Hello Man";
+  }
+
   @PostMapping("/invoice")
   public long add(@RequestBody Invoice invoice) {
     return invoiceService.save(invoice);
