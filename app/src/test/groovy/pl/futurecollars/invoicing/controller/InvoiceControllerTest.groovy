@@ -18,7 +18,7 @@ import static pl.futurecollars.invoicing.TestHelpers.invoice
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class InvoiceControllerTest extends Specification{
+class InvoiceControllerTest extends Specification {
 
     @Autowired
     private MockMvc mockMvc
@@ -53,11 +53,8 @@ class InvoiceControllerTest extends Specification{
 
     def "should return all invoices"() {
         given:
-        def numberOfInvoices = 3
-        (1..numberOfInvoices).collect { id ->
-            def invoice = invoice(id)
-            invoice.id = inMemoryDataBase.save(invoice)
-        }
+        def invoice = invoice(1)
+        invoice.id = inMemoryDataBase.save(invoice)
         when:
         def result = mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
@@ -66,9 +63,9 @@ class InvoiceControllerTest extends Specification{
                 .contentAsString
 
         then:
-
         def resultList = jsonService.toObject(result, Invoice[])
-        resultList.id == [1,2,3]
+        resultList.size() == 1
+        resultList.buyer.name == ["RW INVEST Sp. z o.o"]
     }
 
     def "should save invoice"() {
@@ -108,7 +105,7 @@ class InvoiceControllerTest extends Specification{
 
         def invoiceAsJson = jsonService.toJson(updateInvoice)
         when:
-        def result = mockMvc.perform(put(url ).content(invoiceAsJson)
+        def result = mockMvc.perform(put(url).content(invoiceAsJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
         then:
