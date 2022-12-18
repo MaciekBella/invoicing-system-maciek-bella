@@ -68,7 +68,7 @@ class InvoiceControllerTest extends Specification{
         then:
 
         def resultList = jsonService.toObject(result, Invoice[])
-        resultList.size() == numberOfInvoices
+        resultList.size() == 3
     }
 
     def "should save invoice"() {
@@ -86,7 +86,7 @@ class InvoiceControllerTest extends Specification{
                 .contentAsString
 
         then:
-        result == "4"
+        result == "1"
         def invoiceOptional = inMemoryDataBase.getById(1)
         invoiceOptional.isPresent()
     }
