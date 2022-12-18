@@ -68,6 +68,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.spockframework:spock-spring:2.1-groovy-2.5'
 }
 
 application {
@@ -99,8 +100,7 @@ jacocoTestCoverageVerification {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude:
 
-                    ['pl/futurecollars/invoicing/controller/InvoiceController.class',
-                     'pl/futurecollars/invoicing/db/FileBasedDatabase.class',
+                    ['pl/futurecollars/invoicing/db/FileBasedDatabase.class',
                      'pl/futurecollars/invoicing/db/IdService.class',
                      'pl/futurecollars/invoicing/utils/FileService.class'])
         }))
