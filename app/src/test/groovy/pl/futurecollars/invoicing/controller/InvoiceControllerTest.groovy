@@ -62,7 +62,7 @@ class InvoiceControllerTest extends Specification {
                 .contentAsString
         then:
         def invoices = jsonService.toObject(result, Invoice)
-        invoices.buyer.name == "RW INVEST Sp. z o.o"
+        invoices.id == 1
         invoices.date == LocalDate.now()
     }
 
@@ -101,9 +101,9 @@ class InvoiceControllerTest extends Specification {
                 .response
                 .contentAsString
 
+        def invoiceOptional = inMemoryDataBase.getById(1)
         then:
         result == "1"
-        def invoiceOptional = inMemoryDataBase.getById(1)
         invoiceOptional.isPresent()
         invoiceOptional.get().buyer.name == invoice.buyer.name
         invoiceOptional.get().seller.address == invoice.seller.address
@@ -132,8 +132,8 @@ class InvoiceControllerTest extends Specification {
         mockMvc.perform(put(url).content(invoiceAsJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-        then:
         def invoiceOptional = inMemoryDataBase.getById(1)
+        then:
         invoiceOptional.isPresent()
         invoiceOptional.get().date == updateInvoice.date
 
