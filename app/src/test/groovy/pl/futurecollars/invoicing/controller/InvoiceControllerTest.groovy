@@ -31,9 +31,6 @@ class InvoiceControllerTest extends Specification {
     @Autowired
     private InMemoryDataBase inMemoryDataBase
 
-    def cleanup() {
-        inMemoryDataBase.deleteAll()
-    }
 
     def 'should return empty list when database is empty'() {
         given:
@@ -69,11 +66,12 @@ class InvoiceControllerTest extends Specification {
 
     def "should return all invoices"() {
         given:
-        def numberOfInvoices = 3
+        def numberOfInvoices = 4
         (1..numberOfInvoices).collect { id ->
             def invoice = invoice(id)
             invoice.id = inMemoryDataBase.save(invoice)
         }
+
         when:
         def result = mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
@@ -94,16 +92,15 @@ class InvoiceControllerTest extends Specification {
 
         def invoiceJson = jsonService.toJson(invoice)
         when:
-        def result = mockMvc.perform(post(url).content(invoiceJson)
+        mockMvc.perform(post(url).content(invoiceJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
                 .contentAsString
 
-        def invoiceOptional = inMemoryDataBase.getById(1)
         then:
-        result == "1"
+        def invoiceOptional = inMemoryDataBase.getById(1)
         invoiceOptional.isPresent()
         invoiceOptional.get().buyer.name == invoice.buyer.name
         invoiceOptional.get().seller.address == invoice.seller.address
@@ -174,5 +171,4 @@ class InvoiceControllerTest extends Specification {
         def invoiceResult = inMemoryDataBase.getById(1)
         invoiceResult.isEmpty()
     }
-
 }
