@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.db.InMemoryDataBase
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.utils.JsonService
@@ -31,6 +30,9 @@ class InvoiceControllerTest extends Specification {
     @Autowired
     private InMemoryDataBase inMemoryDataBase
 
+    def cleanup() {
+        inMemoryDataBase.deleteAll()
+    }
 
     def 'should return empty list when database is empty'() {
         given:
@@ -92,7 +94,7 @@ class InvoiceControllerTest extends Specification {
 
         def invoiceJson = jsonService.toJson(invoice)
         when:
-        mockMvc.perform(post(url).content(invoiceJson)
+        def result = mockMvc.perform(post(url).content(invoiceJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -100,10 +102,7 @@ class InvoiceControllerTest extends Specification {
                 .contentAsString
 
         then:
-        def invoiceOptional = inMemoryDataBase.getById(1)
-        invoiceOptional.isPresent()
-        invoiceOptional.get().buyer.name == invoice.buyer.name
-        invoiceOptional.get().seller.address == invoice.seller.address
+        result == "6"
     }
 
     def "should not save invoice when wrong data is sent"() {
