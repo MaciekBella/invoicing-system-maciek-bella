@@ -52,7 +52,7 @@ class InvoiceControllerTest extends Specification {
         given:
         def invoice = invoice(1)
         inMemoryDataBase.save(invoice)
-        def url = "/invoice/1/"
+        def url = "/invoice/1"
         when:
         def result = mockMvc.perform(get(url))
                 .andExpect(status().isOk())
@@ -60,9 +60,9 @@ class InvoiceControllerTest extends Specification {
                 .response
                 .contentAsString
         then:
-        def invoices = jsonService.toObject(result, Invoice)
+        def invoices = jsonService.toObject(result, Invoice.class)
         invoices.id == 1
-        invoices.date == LocalDate.now()
+        invoices.date == invoice.date
     }
 
 
@@ -118,17 +118,17 @@ class InvoiceControllerTest extends Specification {
     def "should update invoice"() {
         given:
         def invoice = invoice(1)
-        inMemoryDataBase.save(invoice)
+       invoice.id = inMemoryDataBase.save(invoice)
         def updateInvoice = invoice
         updateInvoice.date = LocalDate.of(2000, 11, 23)
-        def url = "/invoice/1"
+        def url = "/invoice/$invoice.id"
 
         def invoiceAsJson = jsonService.toJson(updateInvoice)
         when:
         mockMvc.perform(put(url).content(invoiceAsJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-        def invoiceOptional = inMemoryDataBase.getById(1)
+        def invoiceOptional = inMemoryDataBase.getById(invoice.id)
         then:
         invoiceOptional.isPresent()
         invoiceOptional.get().date == updateInvoice.date
@@ -139,27 +139,18 @@ class InvoiceControllerTest extends Specification {
         given:
         Invoice invoice = invoice(1)
         inMemoryDataBase.save(invoice)
-        def url = "/invoice/1"
+        def url = "/invoice/$invoice.id"
         expect:
         mockMvc.perform(put(url).content("elo")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
     }
 
-    def "invoice can be deleted when wrong data is sent"() {
-        given:
-
-        def url = "/invoice/1"
-        expect:
-        mockMvc.perform(MockMvcRequestBuilders.delete(url))
-                .andExpect(status().isOk())
-    }
-
     def "should delete the invoice"() {
         given:
         def invoice = invoice(1)
         inMemoryDataBase.save(invoice)
-        def url = "/invoice/1"
+        def url = "/invoice/$invoice.id"
         when:
         mockMvc.perform(MockMvcRequestBuilders.delete(url))
                 .andExpect(status().isOk())
@@ -167,7 +158,7 @@ class InvoiceControllerTest extends Specification {
                 .response
                 .contentAsString
         then:
-        def invoiceResult = inMemoryDataBase.getById(1)
+        def invoiceResult = inMemoryDataBase.getById(invoice.id)
         invoiceResult.isEmpty()
     }
 }
