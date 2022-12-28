@@ -1,6 +1,6 @@
 package pl.futurecollars.invoicing.utils
 
-import lombok.Generated
+
 import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
@@ -24,7 +24,7 @@ class JsonServiceTest extends Specification {
         given:
         def invoiceInJson = ""
         when:
-        def result = jsonService.toObject(invoiceInJson, Invoice.class)
+        jsonService.toObject(invoiceInJson, Invoice.class)
         then:
         def exception = thrown(RuntimeException)
         exception.message == "Cannot parse json"
