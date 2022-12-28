@@ -14,7 +14,7 @@ public class InvoiceService {
   private final DataBase dataBase;
 
   @Autowired
-  public InvoiceService(@Qualifier("fileBasedDatabase") DataBase dataBase) {
+  public InvoiceService(@Qualifier("inMemoryDataBase") DataBase dataBase) {
     this.dataBase = dataBase;
   }
 

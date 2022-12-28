@@ -11,7 +11,7 @@ import pl.futurecollars.invoicing.model.Invoice;
 @Repository
 public class InMemoryDataBase implements DataBase {
 
-  private final Map<Long, Invoice> invoices = new HashMap<>();
+  private Map<Long, Invoice> invoices = new HashMap<>();
   private long nextId = 1;
 
   @Override
@@ -43,5 +43,9 @@ public class InMemoryDataBase implements DataBase {
   @Override
   public void delete(long id) {
     invoices.remove(id);
+  }
+
+  public void deleteAll() {
+    invoices = new HashMap<>();
   }
 }

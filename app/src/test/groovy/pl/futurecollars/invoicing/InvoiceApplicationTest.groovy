@@ -1,7 +1,9 @@
 package pl.futurecollars.invoicing
 
+import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
+@SpringBootTest
 class InvoiceApplicationTest extends Specification {
 
     def 'should start application context'() {
