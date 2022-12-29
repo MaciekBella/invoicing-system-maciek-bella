@@ -10,7 +10,7 @@ plugins {
 
 group = 'pl.futurecollars.invoicing'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '11.0.16'
 
 configurations {
     compileOnly {
@@ -20,13 +20,6 @@ configurations {
 
 jacoco {
     toolVersion = "0.8.6"
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
-        vendor = JvmVendorSpec.ADOPTOPENJDK
-    }
 }
 
 repositories {
