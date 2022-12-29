@@ -105,4 +105,3 @@ test {
     finalizedBy jacocoTestReport
     finalizedBy jacocoTestCoverageVerification
 }
-
