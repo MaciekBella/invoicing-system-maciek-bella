@@ -1,16 +1,25 @@
+buildscript {
+    ext {
+        lombokVerison = '1.18.24'
+        spockVersion = '2.1-groovy-2,5'
+        spokSpringVersion = '2.1-groovy-3.0'
+        springBootVersion = '2.4.2'
+        springDependencyersMenagmentVersion = '1.0.11.RELEASE'
+        jacocoToolVersion = '0.8.6'
+        springFramevorkBootVersion = '2.7.6'
+        groovyVersion = '3.0.10'
+    }
+}
+
 plugins {
     id 'application'
     id 'checkstyle'
     id 'groovy'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'io.spring.dependency-management' version"${springDependencyersMenagmentVersion}"
     id 'jacoco'
     id 'java'
-    id 'org.springframework.boot' version '2.7.6'
+    id 'org.springframework.boot' version"${springFramevorkBootVersion}"
 }
-
-group = 'pl.futurecollars.invoicing'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11.0.16'
 
 configurations {
     compileOnly {
@@ -18,42 +27,44 @@ configurations {
     }
 }
 
-jacoco {
-    toolVersion = "0.8.6"
-}
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation 'org.codehaus.groovy:groovy:3.0.10'
+    testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
 
-    testImplementation 'org.spockframework:spock-core:2.1-groovy-3.0'
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.spockframework:spock-core:${spokSpringVersion}"
+    testImplementation "junit:junit:4.13.2"
 
-    implementation 'com.google.guava:guava:31.0.1-jre'
+    implementation "com.google.guava:guava:31.0.1-jre"
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1'
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.11.1"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1"
 
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly "org.projectlombok:lombok:${lombokVerison}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVerison}"
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.24'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testCompileOnly "org.projectlombok:lombok:${lombokVerison}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVerison}"
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.spockframework:spock-spring:2.1-groovy-2.5'
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    compileOnly "org.projectlombok:lombok"
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+    annotationProcessor "org.projectlombok:lombok"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.spockframework:spock-spring:${spokSpringVersion}"
+
 }
 
 application {
     mainClass = 'pl.futurecollars.invoicing.App'
 }
+
+group = 'pl.futurecollars.invoicing'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11.0.16'
+
 
 test {
     useJUnitPlatform()
@@ -65,6 +76,10 @@ check {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
+}
+
+jacoco {
+    toolVersion = "0.8.6"
 }
 
 checkstyle {
