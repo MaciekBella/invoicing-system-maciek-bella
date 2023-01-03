@@ -16,17 +16,11 @@ public class SpringFoxConfiguration {
   @Bean
   public Docket docket() {
 
-    return new Docket(DocumentationType.SWAGGER_2)
-        .select()
-        .apis(RequestHandlerSelectors.basePackage("pl.futurecollars"))
-        .paths(PathSelectors.any())
-        .build()
-        .tags(new Tag("invoice-controller","Controller for to read and add invoices"));
+    return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("pl.futurecollars")).paths(PathSelectors.any())
+        .build().tags(new Tag("invoice-controller", "Controller for to read and add invoices"));
   }
 
   private ApiInfo apiInfo() {
-    return new ApiInfoBuilder()
-        .description("Application message set of invoices")
-        .build();
+    return new ApiInfoBuilder().description("Application message set of invoices").build();
   }
 }

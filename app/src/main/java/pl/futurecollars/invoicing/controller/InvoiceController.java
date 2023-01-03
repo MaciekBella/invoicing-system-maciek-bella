@@ -6,12 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.futurecollars.invoicing.api.InvoiceApi;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.service.InvoiceService;
 
 @RestController
+@RequestMapping("invoices")
 @Api(tags = "invoice-controller")
 public class InvoiceController implements InvoiceApi {
 
@@ -32,7 +34,7 @@ public class InvoiceController implements InvoiceApi {
     return invoiceService.getAll();
   }
 
- @Override
+  @Override
   public Optional<Invoice> getById(@PathVariable long id) {
     return invoiceService.getById(id);
   }
@@ -42,7 +44,7 @@ public class InvoiceController implements InvoiceApi {
     invoiceService.update(id, invoice);
   }
 
- @Override
+  @Override
   public void delete(@PathVariable long id) {
     invoiceService.delete(id);
   }
