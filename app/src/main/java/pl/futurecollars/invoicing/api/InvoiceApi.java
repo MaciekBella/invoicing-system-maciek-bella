@@ -15,23 +15,23 @@ import pl.futurecollars.invoicing.model.Invoice;
 @Api(tags = {"invoice-controller"})
 public interface InvoiceApi {
 
-  @PostMapping("/invoice")
+  @PostMapping
   @ApiOperation(value = "Add invoice")
   long add(@RequestBody Invoice invoice);
 
-  @GetMapping("/invoices")
+  @GetMapping
   @ApiOperation(value = "Get All Invoices")
   List<Invoice> getAllInvoices();
 
-  @GetMapping("/invoice/{id}")
+  @GetMapping("/{id}")
   @ApiOperation(value = "Get invoice by Id")
   Optional<Invoice> getById(@PathVariable long id);
 
-  @PutMapping("/invoice/{id}")
+  @PutMapping("/{id}")
   @ApiOperation(value = "Update invoice by Id")
   void update(@PathVariable long id, @RequestBody Invoice invoice);
 
-  @DeleteMapping("/invoice/{id}")
+  @DeleteMapping("/{id}")
   @ApiOperation(value = "Delete invoice by Id")
   void delete(@PathVariable long id);
 }

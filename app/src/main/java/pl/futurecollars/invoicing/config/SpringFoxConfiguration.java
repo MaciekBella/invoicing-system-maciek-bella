@@ -21,6 +21,10 @@ public class SpringFoxConfiguration {
   }
 
   private ApiInfo apiInfo() {
-    return new ApiInfoBuilder().description("Application message set of invoices").build();
+    return new ApiInfoBuilder()
+        .description("Application message set of invoices")
+        .license("No license available - private!")
+        .title("Private Invoicing")
+        .build();
   }
 }

@@ -14,7 +14,7 @@ import pl.futurecollars.invoicing.service.InvoiceService;
 
 @RestController
 @RequestMapping("invoices")
-@Api(tags = "invoice-controller")
+@Api(tags = {"invoice-controller"})
 public class InvoiceController implements InvoiceApi {
 
   private final InvoiceService invoiceService;
