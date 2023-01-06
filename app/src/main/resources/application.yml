@@ -14,5 +14,10 @@ logging:
         boot: INFO
     pl:
       futurecollars:
-        invoicing: WARN
+        invoicing: info
         invoicing.db: DEBUG
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher

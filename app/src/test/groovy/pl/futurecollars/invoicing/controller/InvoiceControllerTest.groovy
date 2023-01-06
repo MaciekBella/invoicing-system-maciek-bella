@@ -52,7 +52,7 @@ class InvoiceControllerTest extends Specification {
         given:
         def invoice = invoice(1)
         inMemoryDataBase.save(invoice)
-        def url = "/invoice/1"
+        def url = "/invoices/1"
         when:
         def result = mockMvc.perform(get(url))
                 .andExpect(status().isOk())
@@ -90,7 +90,7 @@ class InvoiceControllerTest extends Specification {
     def "should save invoice"() {
         given:
         Invoice invoice = invoice(1)
-        def url = "/invoice"
+        def url = "/invoices"
 
         def invoiceJson = jsonService.toJson(invoice)
         when:
@@ -107,7 +107,7 @@ class InvoiceControllerTest extends Specification {
 
     def "should not save invoice when wrong data is sent"() {
         given:
-        def url = "/invoice"
+        def url = "/invoices"
 
         expect:
         mockMvc.perform(post(url).content("siema")
@@ -121,7 +121,7 @@ class InvoiceControllerTest extends Specification {
        invoice.id = inMemoryDataBase.save(invoice)
         def updateInvoice = invoice
         updateInvoice.date = LocalDate.of(2000, 11, 23)
-        def url = "/invoice/$invoice.id"
+        def url = "/invoices/$invoice.id"
 
         def invoiceAsJson = jsonService.toJson(updateInvoice)
         when:
@@ -139,7 +139,7 @@ class InvoiceControllerTest extends Specification {
         given:
         Invoice invoice = invoice(1)
         inMemoryDataBase.save(invoice)
-        def url = "/invoice/$invoice.id"
+        def url = "/invoices/$invoice.id"
         expect:
         mockMvc.perform(put(url).content("elo")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -150,7 +150,7 @@ class InvoiceControllerTest extends Specification {
         given:
         def invoice = invoice(1)
         inMemoryDataBase.save(invoice)
-        def url = "/invoice/$invoice.id"
+        def url = "/invoices/$invoice.id"
         when:
         mockMvc.perform(MockMvcRequestBuilders.delete(url))
                 .andExpect(status().isOk())
