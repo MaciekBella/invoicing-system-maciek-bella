@@ -4,6 +4,8 @@ buildscript {
         spockVersion = '2.1-groovy-2,5'
         spokSpringVersion = '2.1-groovy-3.0'
         springBootVersion = '2.4.2'
+        springFoxUiVersion = '3.0.0'
+        springFoxStarterVersion = '3.0.0'
         springDependencyersMenagmentVersion = '1.0.11.RELEASE'
         jacocoToolVersion = '0.8.6'
         springFramevorkBootVersion = '2.7.6'
@@ -38,6 +40,8 @@ dependencies {
     testImplementation "junit:junit:4.13.2"
 
     implementation "com.google.guava:guava:31.0.1-jre"
+    implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
+    implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
 
     implementation "com.fasterxml.jackson.core:jackson-databind:2.11.1"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1"
