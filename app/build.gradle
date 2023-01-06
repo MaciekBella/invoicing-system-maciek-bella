@@ -10,7 +10,6 @@ buildscript {
         jacocoToolVersion = '0.8.6'
         springFramevorkBootVersion = '2.7.6'
         groovyVersion = '3.0.10'
-
     }
 }
 

@@ -6,6 +6,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -15,16 +16,26 @@ public class SpringFoxConfiguration {
 
   @Bean
   public Docket docket() {
-
-    return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("pl.futurecollars")).paths(PathSelectors.any())
-        .build().tags(new Tag("invoice-controller", "Controller for to read and add invoices"));
+    return new Docket(DocumentationType.SWAGGER_2)
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("pl.futurecollars"))
+        .paths(PathSelectors.any())
+        .build()
+        .tags(new Tag(
+            "invoice-controller",
+            "Controller used to list / add / update/ delete invoices."))
+        .apiInfo(apiInfo());
   }
 
   private ApiInfo apiInfo() {
-    return new ApiInfoBuilder()
-        .description("Application message set of invoices")
+    return new ApiInfoBuilder().description("Application message set of invoices")
         .license("No license available - private!")
-        .title("Private Invoicing")
+        .title("Invoicing")
+        .contact(
+            new Contact(
+                "Michał Cąber ,Maciek Bella",
+                "wykop.pl",
+                "michałmaciek@op.pl"))
         .build();
   }
 }

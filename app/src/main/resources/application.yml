@@ -17,7 +17,7 @@ logging:
         invoicing: info
         invoicing.db: DEBUG
 
-Spring:
+spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
