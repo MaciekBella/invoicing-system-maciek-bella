@@ -1,4 +1,4 @@
-package pl.futurecollars.invoicing.Service
+package pl.futurecollars.invoicing.controller
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -18,34 +18,32 @@ import static pl.futurecollars.invoicing.TestHelpers.invoice
 class TaxCalculatorControllerTest extends Specification {
 
     @Autowired
-    TaxCalculatorService taxCalculatorService;
+    private TaxCalculatorService taxCalculatorService;
     @Autowired
-    JsonService jsonService
+    private JsonService jsonService
     @Autowired
-    MockMvc mockMvc
+    private MockMvc mockMvc
 
-
-    long addInvoiceAndReturnId(String invoiceAsJson) {
-        Integer.valueOf(
-                mockMvc.perform(
-                        post("/invoices")
-                                .content(invoiceAsJson)
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                        .andExpect(status().isOk())
-                        .andReturn()
-                        .response
-                        .contentAsString
+    def addInvoiceAndReturnId(String invoiceAsJson) {
+        mockMvc.perform(
+                post("/invoices")
+                        .content(invoiceAsJson)
+                        .contentType(MediaType.APPLICATION_JSON)
         )
-    }
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .contentAsString
 
-    List<Invoice> addInvoices(long count) {
-        (1..count).collect { id ->
-            def invoice = invoice(id)
-            invoice.id = addInvoiceAndReturnId(jsonService.toJson(invoice))
-            return invoice
-        }
     }
+            private List<Invoice> addInvoices(int count) {
+                (1..count).collect { id ->
+                    def invoice = invoice(id)
+                    invoice.id = addInvoiceAndReturnId(jsonService.toJson(invoice)) as long
+                    return invoice
+                }
+            }
+
 
     def "should return zero if there is no invoice"() {
         when:
@@ -63,7 +61,6 @@ class TaxCalculatorControllerTest extends Specification {
     def "should return sum of products if NIP matches"() {
         given:
         addInvoices(10)
-
         when:
         def taxCalculatorResponse = taxCalculatorService.calculateTaxes("5")
 
