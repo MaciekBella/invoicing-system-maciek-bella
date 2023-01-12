@@ -58,6 +58,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.spockframework:spock-spring:${spokSpringVersion}"
+    runtimeOnly "org.postgresql:postgresql:42.2.19"
+    compileOnly ("org.flywaydb:flyway-core:7.0.0")
 
 }
 
