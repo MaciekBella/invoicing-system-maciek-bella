@@ -1,6 +1,7 @@
 package pl.futurecollars.invoicing.service;
 
 import java.math.BigDecimal;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,19 +16,19 @@ public class TaxCalculatorService {
   private final InMemoryDataBase inMemoryDataBase;
 
   public BigDecimal income(String taxIdentificationNumber) {
-    return inMemoryDataBase.visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);
+    return visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);
   }
 
   public BigDecimal costs(String taxIdentificationNumber) {
-    return inMemoryDataBase.visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);
+    return visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);
   }
 
   public BigDecimal incomingVat(String taxIdentificationNumber) {
-    return inMemoryDataBase.visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getVatValue);
+    return visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getVatValue);
   }
 
   public BigDecimal outgoingVat(String taxIdentificationNumber) {
-    return inMemoryDataBase.visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getVatValue);
+    return visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getVatValue);
   }
 
   public BigDecimal getEarnings(String taxIdentificationNumber) {
@@ -55,5 +56,14 @@ public class TaxCalculatorService {
 
   private Predicate<Invoice> buyerPredicate(String taxIdentificationNumber) {
     return invoice -> taxIdentificationNumber.equals(invoice.getBuyer().getTaxIdentificationNumber());
+  }
+
+  public BigDecimal visit(Predicate<Invoice> invoicePredicate, Function<InvoiceEntry, BigDecimal> invoiceEntryToValue) {
+    return inMemoryDataBase.getAll()
+        .stream()
+        .filter(invoicePredicate)
+        .flatMap(i -> i.getEntries().stream())
+        .map(invoiceEntryToValue)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 }
