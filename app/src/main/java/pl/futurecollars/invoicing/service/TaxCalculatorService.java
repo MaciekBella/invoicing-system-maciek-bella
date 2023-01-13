@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.function.Predicate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.futurecollars.invoicing.db.DataBase;
+import pl.futurecollars.invoicing.db.InMemoryDataBase;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.model.InvoiceEntry;
 
@@ -12,22 +12,22 @@ import pl.futurecollars.invoicing.model.InvoiceEntry;
 @AllArgsConstructor
 public class TaxCalculatorService {
 
-  private final DataBase database;
+  private final InMemoryDataBase inMemoryDataBase;
 
   public BigDecimal income(String taxIdentificationNumber) {
-    return database.visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);
+    return inMemoryDataBase.visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);
   }
 
   public BigDecimal costs(String taxIdentificationNumber) {
-    return database.visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);
+    return inMemoryDataBase.visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);
   }
 
   public BigDecimal incomingVat(String taxIdentificationNumber) {
-    return database.visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getVatValue);
+    return inMemoryDataBase.visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getVatValue);
   }
 
   public BigDecimal outgoingVat(String taxIdentificationNumber) {
-    return database.visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getVatValue);
+    return inMemoryDataBase.visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getVatValue);
   }
 
   public BigDecimal getEarnings(String taxIdentificationNumber) {
