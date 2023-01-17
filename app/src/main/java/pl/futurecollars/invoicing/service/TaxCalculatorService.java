@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.futurecollars.invoicing.db.InMemoryDataBase;
 import pl.futurecollars.invoicing.model.Invoice;
@@ -13,6 +14,7 @@ import pl.futurecollars.invoicing.model.InvoiceEntry;
 @AllArgsConstructor
 public class TaxCalculatorService {
 
+  @Autowired
   private final InMemoryDataBase inMemoryDataBase;
 
   public BigDecimal income(String taxIdentificationNumber) {
@@ -58,7 +60,7 @@ public class TaxCalculatorService {
     return invoice -> taxIdentificationNumber.equals(invoice.getBuyer().getTaxIdentificationNumber());
   }
 
-  public BigDecimal visit(Predicate<Invoice> invoicePredicate, Function<InvoiceEntry, BigDecimal> invoiceEntryToValue) {
+  private BigDecimal visit(Predicate<Invoice> invoicePredicate, Function<InvoiceEntry, BigDecimal> invoiceEntryToValue) {
     return inMemoryDataBase.getAll()
         .stream()
         .filter(invoicePredicate)
