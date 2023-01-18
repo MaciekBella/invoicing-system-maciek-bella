@@ -34,7 +34,7 @@ repositories {
 dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVerison}"
     compileOnly "org.projectlombok:lombok:${lombokVerison}"
-    compile "org.flywaydb:flyway-core:7.0.0"
+    compile "org.flywaydb:flyway-core"
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
 
