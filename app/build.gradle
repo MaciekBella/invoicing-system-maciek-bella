@@ -68,3 +68,45 @@ check {
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
 }
+jacoco {
+    toolVersion = "0.8.6"
+}
+
+checkstyle {
+    showViolations = true
+    ignoreFailures = false
+    maxWarnings = 0
+    maxErrors = 0
+}
+
+jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude:
+
+                    ['pl/futurecollars/invoicing/db/FileBasedDatabase.class',
+                     'pl/futurecollars/invoicing/db/IdService.class',
+                     'pl/futurecollars/invoicing/utils/FileService.class'])
+        }))
+    }
+    violationRules {
+        rule {
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.9
+            }
+        }
+
+        rule {
+            limit {
+                counter = 'LINE'
+                minimum = 0.9
+            }
+        }
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport
+    finalizedBy jacocoTestCoverageVerification
+}
