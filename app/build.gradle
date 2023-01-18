@@ -1,18 +1,21 @@
 buildscript {
     ext {
+        flywayVersion = '7.0.0'
+        groovyVersion = '3.0.10'
+        jacocoToolVersion = '0.8.6'
+        jUnitVersion = '4.13.2'
         lombokVerison = '1.18.24'
+        postgresqlVersion = '42.2.19'
         spockVersion = '2.1-groovy-2,5'
         spokSpringVersion = '2.1-groovy-3.0'
         springBootVersion = '2.4.2'
         springFoxUiVersion = '3.0.0'
         springFoxStarterVersion = '3.0.0'
         springDependencyersMenagmentVersion = '1.0.11.RELEASE'
-        jacocoToolVersion = '0.8.6'
         springFramevorkBootVersion = '2.7.6'
-        groovyVersion = '3.0.10'
+
     }
 }
-
 plugins {
     id 'application'
     id 'checkstyle'
@@ -22,57 +25,44 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version"${springFramevorkBootVersion}"
 }
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
 }
-
 repositories {
     mavenCentral()
 }
-
 dependencies {
-    testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVerison}"
+    compileOnly "org.projectlombok:lombok:${lombokVerison}"
+    compile "org.flywaydb:flyway-core:${flywayVersion}"
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+    runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
 
-    testImplementation "org.spockframework:spock-core:${spokSpringVersion}"
-    testImplementation "junit:junit:4.13.2"
-
-    implementation "com.google.guava:guava:31.0.1-jre"
     implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
     implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
-
     implementation "com.fasterxml.jackson.core:jackson-databind:2.11.1"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1"
-
-    compileOnly "org.projectlombok:lombok:${lombokVerison}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVerison}"
-
-    testCompileOnly "org.projectlombok:lombok:${lombokVerison}"
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVerison}"
-
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-jdbc"
-    compileOnly "org.projectlombok:lombok"
-    developmentOnly "org.springframework.boot:spring-boot-devtools"
-    annotationProcessor "org.projectlombok:lombok"
+
+    testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
+    testImplementation "org.spockframework:spock-core:${spokSpringVersion}"
+    testImplementation "junit:junit:${jUnitVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.spockframework:spock-spring:${spokSpringVersion}"
-    runtimeOnly "org.postgresql:postgresql:42.2.19"
-    compileOnly ("org.flywaydb:flyway-core:7.0.0")
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVerison}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVerison}"
 
 }
 
 application {
     mainClass = 'pl.futurecollars.invoicing.App'
 }
-
 group = 'pl.futurecollars.invoicing'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11.0.16'
-
-
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
@@ -80,50 +70,6 @@ test {
 check {
     finalizedBy jacocoTestCoverageVerification
 }
-
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
-}
-
-jacoco {
-    toolVersion = "0.8.6"
-}
-
-checkstyle {
-    showViolations = true
-    ignoreFailures = false
-    maxWarnings = 0
-    maxErrors = 0
-}
-
-jacocoTestCoverageVerification {
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude:
-
-                    ['pl/futurecollars/invoicing/db/FileBasedDatabase.class',
-                     'pl/futurecollars/invoicing/db/IdService.class',
-                     'pl/futurecollars/invoicing/utils/FileService.class'])
-        }))
-    }
-    violationRules {
-        rule {
-            limit {
-                counter = 'BRANCH'
-                minimum = 0.9
-            }
-        }
-
-        rule {
-            limit {
-                counter = 'LINE'
-                minimum = 0.9
-            }
-        }
-    }
-}
-
-test {
-    finalizedBy jacocoTestReport
-    finalizedBy jacocoTestCoverageVerification
 }

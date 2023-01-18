@@ -8,10 +8,6 @@ CREATE TABLE public.company
 
     name              character varying(100) NOT NULL,
 
-    pension_insurance numeric(10, 2)         NOT NULL DEFAULT 0,
-
-    health_insurance  numeric(10, 2)         NOT NULL DEFAULT 0,
-
     PRIMARY KEY (id)
 
 );
