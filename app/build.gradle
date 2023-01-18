@@ -12,7 +12,6 @@ buildscript {
         springFoxStarterVersion = '3.0.0'
         springDependencyersMenagmentVersion = '1.0.11.RELEASE'
         springFramevorkBootVersion = '2.7.6'
-
     }
 }
 plugins {
@@ -45,7 +44,6 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1"
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-jdbc"
-
     testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
     testImplementation "org.spockframework:spock-core:${spokSpringVersion}"
     testImplementation "junit:junit:${jUnitVersion}"
@@ -53,9 +51,7 @@ dependencies {
     testImplementation "org.spockframework:spock-spring:${spokSpringVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVerison}"
     testCompileOnly "org.projectlombok:lombok:${lombokVerison}"
-
 }
-
 application {
     mainClass = 'pl.futurecollars.invoicing.App'
 }
