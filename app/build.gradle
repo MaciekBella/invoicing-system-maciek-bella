@@ -1,6 +1,5 @@
 buildscript {
     ext {
-        flywayVersion = '7.0.0'
         groovyVersion = '3.0.10'
         jacocoToolVersion = '0.8.6'
         jUnitVersion = '4.13.2'
@@ -36,7 +35,7 @@ repositories {
 dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVerison}"
     compileOnly "org.projectlombok:lombok:${lombokVerison}"
-    compile "org.flywaydb:flyway-core:${flywayVersion}"
+    compile "org.flywaydb:flyway-core"
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
 
