@@ -16,14 +16,32 @@ class TestHelpers {
     }
 
     static product(long id) {
-        new InvoiceEntry("Programming course $id", BigDecimal.valueOf(id * 1000), BigDecimal.valueOf(id * 1000 * 0.08), Vat.VAT_8)
+        new InvoiceEntry(
+                "Programming course $id",
+                BigDecimal.valueOf(id * 1000),
+                BigDecimal.valueOf(id * 1000 * 0.08),
+                Vat.VAT_8)
     }
 
     static invoice(long id) {
-        new Invoice(LocalDate.now(), company(id), company(id), List.of(product(id)))
+        new Invoice(
+                LocalDate.now(),
+                company(id),
+                company(id),
+                List.of(product(id)))
     }
 
-    static updateInvoice(long id) {
-        new Invoice(LocalDate.now(), company(id), company(id), List.of(product(id)))
+    static invoiceWithNIP(String nip) {
+        new Invoice(
+                LocalDate.now(),
+                companyWithNIP(nip),
+                companyWithNIP(nip),
+                List.of(product(5)))
+    }
+
+    static companyWithNIP(String nip) {
+        new Company(nip,
+                "ul. Lączna 43 03-156 Lipinki, Polska",
+                "RW INVEST Sp. z o.o")
     }
 }
