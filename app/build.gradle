@@ -1,7 +1,8 @@
 buildscript {
     ext {
-        flywayDbVersion = '9.8.1'
+        flywayVersion = '7.0.0'
         groovyVersion = '3.0.10'
+        h2Version = '1.4.200'
         jacocoToolVersion = '0.8.6'
         jUnitVersion = '4.13.2'
         lombokVerison = '1.18.24'
@@ -23,7 +24,6 @@ plugins {
     id 'jacoco'
     id 'java'
     id 'org.springframework.boot' version "${springFramevorkBootVersion}"
-    id 'org.flywaydb.flyway' version "${flywayDbVersion}"
 }
 configurations {
     compileOnly {
@@ -36,9 +36,10 @@ repositories {
 dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVerison}"
     compileOnly "org.projectlombok:lombok:${lombokVerison}"
-    compile "org.flywaydb:flyway-core"
+    compile "org.flywaydb:flyway-core:${flywayVersion}"
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
+    runtimeOnly "com.h2database:h2:${h2Version}"
 
     implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
     implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
