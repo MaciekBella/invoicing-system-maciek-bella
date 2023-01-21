@@ -15,4 +15,5 @@ public interface DataBase {
   void update(long id, Invoice invoice);
 
   void delete(long id);
+
 }
