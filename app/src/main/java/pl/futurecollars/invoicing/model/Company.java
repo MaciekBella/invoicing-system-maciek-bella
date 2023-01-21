@@ -1,11 +1,13 @@
 package pl.futurecollars.invoicing.model;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Builder
 public class Company {
 
   @ApiModelProperty(value = "Tax identification number", required = true, example = "552-168-00")
