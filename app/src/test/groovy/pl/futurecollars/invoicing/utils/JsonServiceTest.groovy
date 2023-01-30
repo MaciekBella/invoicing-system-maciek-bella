@@ -32,7 +32,7 @@ class JsonServiceTest extends Specification {
 
     def "Should map json to object"() {
         given:
-        def invoiceInJson = TestHelpers.company(0)
+        def invoiceInJson = TestHelpers.company(1)
         when:
         def result1 = jsonService.toJson(invoiceInJson)
         then:

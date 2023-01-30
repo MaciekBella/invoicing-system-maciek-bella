@@ -1,22 +1,28 @@
-package pl.futurecollars.invoicing.Service
+package pl.futurecollars.invoicing.service
 
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import pl.futurecollars.invoicing.db.DataBase
 import pl.futurecollars.invoicing.db.InMemoryDataBase
 import pl.futurecollars.invoicing.model.Invoice
-import pl.futurecollars.invoicing.service.InvoiceService
 import spock.lang.Specification
 
 import static pl.futurecollars.invoicing.TestHelpers.invoice
 
+@SpringBootTest
 class InvoiceServiceIntegrationTest extends Specification {
 
+    @Autowired
+    private DataBase dataBase
+    @Autowired
     private InvoiceService service
     private List<Invoice> invoices
 
-    def setup() {
-        DataBase db = new InMemoryDataBase()
-        service = new InvoiceService(db)
+    def cleanup(){
+        dataBase.getAll().forEach(invoice -> dataBase.delete(invoice.getId()))
+    }
 
+    def setup() {
         invoices = (1..12).collect { invoice(it) }
     }
 

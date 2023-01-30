@@ -47,6 +47,7 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1"
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-jdbc"
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
     testImplementation "org.spockframework:spock-core:${spokSpringVersion}"
     testImplementation "junit:junit:${jUnitVersion}"
@@ -109,6 +110,15 @@ jacocoTestCoverageVerification {
         }
     }
 }
+task testWithMemoryDatabase(type: Test) {
+    systemProperty 'spring.profiles.active', 'memory'
+}
+
+task testWithJPADatabase(type: Test) {
+    systemProperty 'spring.profiles.active', 'jpa'
+}
+check.dependsOn testWithMemoryDatabase
+check.dependsOn testWithJPADatabase
 
 test {
     finalizedBy jacocoTestReport
