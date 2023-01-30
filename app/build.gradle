@@ -17,7 +17,6 @@ buildscript {
     }
 }
 plugins {
-    id 'application'
     id 'checkstyle'
     id 'groovy'
     id 'io.spring.dependency-management' version "${springDependencyersMenagmentVersion}"
@@ -36,7 +35,7 @@ repositories {
 dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVerison}"
     compileOnly "org.projectlombok:lombok:${lombokVerison}"
-    compile "org.flywaydb:flyway-core:${flywayVersion}"
+    compileOnly "org.flywaydb:flyway-core:${flywayVersion}"
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
     runtimeOnly "com.h2database:h2:${h2Version}"
@@ -56,9 +55,7 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVerison}"
     testCompileOnly "org.projectlombok:lombok:${lombokVerison}"
 }
-application {
-    mainClass = 'pl.futurecollars.invoicing.App'
-}
+
 group = 'pl.futurecollars.invoicing'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11.0.16'
@@ -66,11 +63,23 @@ sourceCompatibility = '11.0.16'
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+    finalizedBy jacocoTestCoverageVerification
 }
+
 check {
     finalizedBy jacocoTestCoverageVerification
 }
+
 jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude:
+
+                    ['pl/futurecollars/invoicing/db/FileBasedDatabase.class',
+                     'pl/futurecollars/invoicing/db/IdService.class',
+                     'pl/futurecollars/invoicing/utils/FileService.class'])
+        }))
+    }
     dependsOn test // tests are required to run before generating the report
 }
 jacoco {
@@ -111,16 +120,14 @@ jacocoTestCoverageVerification {
     }
 }
 task testWithMemoryDatabase(type: Test) {
-    systemProperty 'spring.profiles.active', 'memory'
+    systemProperty 'spring.profiles.active', 'dev'
+    useJUnitPlatform()
 }
 
 task testWithJPADatabase(type: Test) {
     systemProperty 'spring.profiles.active', 'jpa'
+    useJUnitPlatform()
 }
+
 check.dependsOn testWithMemoryDatabase
 check.dependsOn testWithJPADatabase
-
-test {
-    finalizedBy jacocoTestReport
-    finalizedBy jacocoTestCoverageVerification
-}

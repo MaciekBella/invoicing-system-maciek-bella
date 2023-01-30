@@ -30,8 +30,8 @@ class InvoiceControllerTest extends Specification {
     @Autowired
     private DataBase database
 
-    def cleanup() {
-        database.deleteAll()
+    def cleanup(){
+        database.getAll().forEach(invoice -> database.delete(invoice.getId()))
     }
 
     def 'should return empty list when database is empty'() {

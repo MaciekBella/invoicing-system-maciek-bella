@@ -11,7 +11,7 @@ class TestHelpers {
 
     static company(long id) {
         Company.builder()
-                .taxIdentificationNumber(("$id").repeat(1))
+                .taxIdentificationNumber("$id")
                 .address("ul. Lączna 43 03-156 Lipinki, Polska")
                 .name(("RW INVEST Sp. z o.o"))
                 .build()
