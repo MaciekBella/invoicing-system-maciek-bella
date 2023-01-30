@@ -30,7 +30,7 @@ class InvoiceControllerTest extends Specification {
     @Autowired
     private DataBase database
 
-    def cleanup(){
+    def cleanup() {
         database.getAll().forEach(invoice -> database.delete(invoice.getId()))
     }
 
@@ -51,8 +51,8 @@ class InvoiceControllerTest extends Specification {
     def "should return invoice"() {
         given:
         def invoice = invoice(1)
-        database.save(invoice)
-        def url = "/invoices/1"
+        def id = database.save(invoice)
+        def url = "/invoices/$id"
         when:
         def result = mockMvc.perform(get(url))
                 .andExpect(status().isOk())
@@ -60,9 +60,9 @@ class InvoiceControllerTest extends Specification {
                 .response
                 .contentAsString
         then:
-        def invoices = jsonService.toObject(result, Invoice.class)
-        invoices.id == 1
-        invoices.date == invoice.date
+        def actualInvoice = jsonService.toObject(result, Invoice.class)
+        actualInvoice.id == id
+        actualInvoice.date == invoice.date
     }
 
 
@@ -89,7 +89,7 @@ class InvoiceControllerTest extends Specification {
 
     def "should save invoice"() {
         given:
-        Invoice invoice = invoice(1)
+        def invoice = invoice(1)
         def url = "/invoices"
 
         def invoiceJson = jsonService.toJson(invoice)
@@ -102,7 +102,10 @@ class InvoiceControllerTest extends Specification {
                 .contentAsString
 
         then:
-        result == "6"
+        def savedInvoice = database.getById(result as Long)
+        savedInvoice.isPresent()
+        savedInvoice.get().id == result as Long
+        savedInvoice.get().buyer.taxIdentificationNumber == '1'
     }
 
     def "should not save invoice when wrong data is sent"() {
@@ -118,7 +121,7 @@ class InvoiceControllerTest extends Specification {
     def "should update invoice"() {
         given:
         def invoice = invoice(1)
-       invoice.id = database.save(invoice)
+        invoice.id = database.save(invoice)
         def updateInvoice = invoice
         updateInvoice.date = LocalDate.of(2000, 11, 23)
         def url = "/invoices/$invoice.id"
