@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,8 +44,14 @@ public class Invoice {
   private Company seller;
 
   @JoinColumn(name = "invoice_invoice_entry")
-  @OneToMany(cascade = ALL, orphanRemoval = true)
+  @OneToMany(cascade = ALL, orphanRemoval = true, fetch = FetchType.EAGER)
   @ApiModelProperty(value = "list of products|services", required = true)
   private List<InvoiceEntry> entries;
 
+  public Invoice(LocalDate date, Company buyer, Company seller, List<InvoiceEntry> entries) {
+    this.date = date;
+    this.buyer = buyer;
+    this.seller = seller;
+    this.entries = entries;
+  }
 }

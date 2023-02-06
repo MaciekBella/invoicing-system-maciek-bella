@@ -41,6 +41,8 @@ public class JpaDatabase implements DataBase {
       invoice.getSeller().setId(odlInvoice.getSeller().getId());
 
       invoiceRepository.save(invoice);
+    } else {
+      throw new IllegalArgumentException("Invoice with id: " + id + " does not exist in database");
     }
   }
 

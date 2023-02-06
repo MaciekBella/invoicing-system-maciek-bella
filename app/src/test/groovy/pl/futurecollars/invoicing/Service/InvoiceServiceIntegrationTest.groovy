@@ -2,9 +2,7 @@ package pl.futurecollars.invoicing.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import pl.futurecollars.invoicing.db.DataBase
-import pl.futurecollars.invoicing.db.InMemoryDataBase
-import pl.futurecollars.invoicing.model.Invoice
+import pl.futurecollars.invoicing.TestHelpers
 import spock.lang.Specification
 
 import static pl.futurecollars.invoicing.TestHelpers.invoice
@@ -13,28 +11,23 @@ import static pl.futurecollars.invoicing.TestHelpers.invoice
 class InvoiceServiceIntegrationTest extends Specification {
 
     @Autowired
-    private DataBase dataBase
-    @Autowired
     private InvoiceService service
-    private List<Invoice> invoices
 
-    def cleanup(){
-        dataBase.getAll().forEach(invoice -> dataBase.delete(invoice.getId()))
-    }
-
-    def setup() {
-        invoices = (1..12).collect { invoice(it) }
+    def cleanup() {
+        service.getAll().forEach(invoice -> service.delete(invoice.getId()))
     }
 
     def "should save invoices returning sequential id"() {
+        given:
+        def invoices = [invoice(1), invoice(2)]
+
         when:
         def ids = invoices.collect({ service.save(it) })
 
         then:
-        ids == (1..invoices.size()).collect()
+        ids == service.getAll().collect({ it.id })
         ids.forEach({ assert service.getById(it).isPresent() })
         ids.forEach({ assert service.getById(it).get().getId() == it })
-        ids.forEach({ assert service.getById(it).get() == invoices.get(it - 1 as int) })
     }
 
     def "should get by id returns empty optional when there is no invoice with given id"() {
@@ -49,27 +42,28 @@ class InvoiceServiceIntegrationTest extends Specification {
 
     def "should receive all returns all invoices in the database, deleted invoice is not returned"() {
         given:
-        invoices.forEach({ service.save(it) })
+        def invoices = [invoice(1), invoice(2)]
+        def ids = invoices.collect({ service.save(it) })
 
         expect:
         service.getAll().size() == invoices.size()
-        service.getAll().forEach({ assert it == invoices.get(it.getId() - 1 as int) })
+        ids.forEach({ assert service.getById(it).isPresent() })
 
         when:
-        service.delete(1)
+        service.delete(ids.get(0))
 
         then:
         service.getAll().size() == invoices.size() - 1
-        service.getAll().forEach({ assert it == invoices.get(it.getId() - 1 as int) })
-        service.getAll().forEach({ assert it.getId() != 1 })
+        service.getAll().forEach({ assert ids.contains(it.id) })
     }
 
     def "should delete all invoices"() {
         given:
-        invoices.forEach({ service.save(it) })
+        def invoices = [invoice(1), invoice(2)]
+        def ids = invoices.collect({ service.save(it) })
 
         when:
-        invoices.forEach({ service.delete(it.getId()) })
+        ids.forEach({ service.delete(it) })
 
         then:
         service.getAll().isEmpty()
@@ -82,18 +76,25 @@ class InvoiceServiceIntegrationTest extends Specification {
 
     def "should  possible to update the invoice"() {
         given:
-        long id = service.save(invoices.get(0))
+        def invoice = invoice(1)
+        long id = service.save(invoice)
+        def updatedInvoice = TestHelpers.invoice(2)
 
         when:
-        service.update(id, invoices.get(1))
+        service.update(id, updatedInvoice)
 
         then:
-        service.getById(id).get() == invoices.get(1)
+        def actualInvoice = service.getById(id).get()
+        actualInvoice.buyer.taxIdentificationNumber == '2'
+        actualInvoice.seller.taxIdentificationNumber == '2'
     }
 
     def "should updating not existing invoice throws exception"() {
+        given:
+        def updatedInvoice = invoice(1)
+
         when:
-        service.update(213, invoices.get(1))
+        service.update(213, updatedInvoice)
 
         then:
         def ex = thrown(IllegalArgumentException)

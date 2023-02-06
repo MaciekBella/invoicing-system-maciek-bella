@@ -32,11 +32,11 @@ class JsonServiceTest extends Specification {
 
     def "Should map json to object"() {
         given:
-        def invoiceInJson = TestHelpers.company(1)
+        def companyInJson = TestHelpers.company(0)
         when:
-        def result1 = jsonService.toJson(invoiceInJson)
+        def result = jsonService.toJson(companyInJson)
         then:
-        result1 == "{\"taxIdentificationNumber\":\"0\",\"address\":\"ul. Lączna 43 03-156 Lipinki, Polska\",\"name\":\"RW INVEST Sp. z o.o\"}"
+        result == "{\"taxIdentificationNumber\":\"0\",\"address\":\"ul. Lączna 43 03-156 Lipinki, Polska\",\"name\":\"RW INVEST Sp. z o.o\"}"
 
     }
 }
