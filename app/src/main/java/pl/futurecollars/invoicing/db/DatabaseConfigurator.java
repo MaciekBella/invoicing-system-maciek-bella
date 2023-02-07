@@ -45,4 +45,11 @@ public class DatabaseConfigurator {
     log.debug("Creating in-memory database");
     return new InMemoryDataBase();
   }
+
+  @Bean
+  @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "jpa")
+  public DataBase jpaDatabase(InvoiceRepository invoiceRepository) {
+    log.debug("Creating jpa database");
+    return new JpaDatabase(invoiceRepository);
+  }
 }

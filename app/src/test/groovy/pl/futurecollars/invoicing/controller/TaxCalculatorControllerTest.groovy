@@ -24,6 +24,9 @@ class TaxCalculatorControllerTest extends Specification {
     @Autowired
     private MockMvc mockMvc
 
+    def cleanup() {
+        dataBase.getAll().forEach(invoice -> dataBase.delete(invoice.getId()))
+    }
 
     def "should return sum of products if NIP matches"() {
         given:
