@@ -43,7 +43,4 @@ public class InMemoryDataBase implements DataBase {
     invoices.remove(id);
   }
 
-  public void deleteAll() {
-    invoices = new HashMap<>();
-  }
 }

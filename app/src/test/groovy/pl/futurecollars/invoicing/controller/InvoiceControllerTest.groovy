@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import pl.futurecollars.invoicing.db.InMemoryDataBase
+import pl.futurecollars.invoicing.db.DataBase
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.utils.JsonService
 import spock.lang.Specification
@@ -28,10 +28,10 @@ class InvoiceControllerTest extends Specification {
     @Autowired
     private JsonService jsonService
     @Autowired
-    private InMemoryDataBase inMemoryDataBase
+    private DataBase database
 
     def cleanup() {
-        inMemoryDataBase.deleteAll()
+        database.getAll().forEach(invoice -> database.delete(invoice.getId()))
     }
 
     def 'should return empty list when database is empty'() {
@@ -51,8 +51,8 @@ class InvoiceControllerTest extends Specification {
     def "should return invoice"() {
         given:
         def invoice = invoice(1)
-        inMemoryDataBase.save(invoice)
-        def url = "/invoices/1"
+        def id = database.save(invoice)
+        def url = "/invoices/$id"
         when:
         def result = mockMvc.perform(get(url))
                 .andExpect(status().isOk())
@@ -60,9 +60,9 @@ class InvoiceControllerTest extends Specification {
                 .response
                 .contentAsString
         then:
-        def invoices = jsonService.toObject(result, Invoice.class)
-        invoices.id == 1
-        invoices.date == invoice.date
+        def actualInvoice = jsonService.toObject(result, Invoice.class)
+        actualInvoice.id == id
+        actualInvoice.date == invoice.date
     }
 
 
@@ -71,7 +71,7 @@ class InvoiceControllerTest extends Specification {
         def numberOfInvoices = 4
         (1..numberOfInvoices).collect { id ->
             def invoice = invoice(id)
-            invoice.id = inMemoryDataBase.save(invoice)
+            invoice.id = database.save(invoice)
         }
 
         when:
@@ -89,7 +89,7 @@ class InvoiceControllerTest extends Specification {
 
     def "should save invoice"() {
         given:
-        Invoice invoice = invoice(1)
+        def invoice = invoice(1)
         def url = "/invoices"
 
         def invoiceJson = jsonService.toJson(invoice)
@@ -102,7 +102,10 @@ class InvoiceControllerTest extends Specification {
                 .contentAsString
 
         then:
-        result == "6"
+        def savedInvoice = database.getById(result as Long)
+        savedInvoice.isPresent()
+        savedInvoice.get().id == result as Long
+        savedInvoice.get().buyer.taxIdentificationNumber == '1'
     }
 
     def "should not save invoice when wrong data is sent"() {
@@ -118,7 +121,7 @@ class InvoiceControllerTest extends Specification {
     def "should update invoice"() {
         given:
         def invoice = invoice(1)
-       invoice.id = inMemoryDataBase.save(invoice)
+        invoice.id = database.save(invoice)
         def updateInvoice = invoice
         updateInvoice.date = LocalDate.of(2000, 11, 23)
         def url = "/invoices/$invoice.id"
@@ -128,7 +131,7 @@ class InvoiceControllerTest extends Specification {
         mockMvc.perform(put(url).content(invoiceAsJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-        def invoiceOptional = inMemoryDataBase.getById(invoice.id)
+        def invoiceOptional = database.getById(invoice.id)
         then:
         invoiceOptional.isPresent()
         invoiceOptional.get().date == updateInvoice.date
@@ -138,7 +141,7 @@ class InvoiceControllerTest extends Specification {
     def "should not update invoice when wrong data is sent"() {
         given:
         Invoice invoice = invoice(1)
-        inMemoryDataBase.save(invoice)
+        database.save(invoice)
         def url = "/invoices/$invoice.id"
         expect:
         mockMvc.perform(put(url).content("elo")
@@ -149,7 +152,7 @@ class InvoiceControllerTest extends Specification {
     def "should delete the invoice"() {
         given:
         def invoice = invoice(1)
-        inMemoryDataBase.save(invoice)
+        database.save(invoice)
         def url = "/invoices/$invoice.id"
         when:
         mockMvc.perform(MockMvcRequestBuilders.delete(url))
@@ -158,7 +161,7 @@ class InvoiceControllerTest extends Specification {
                 .response
                 .contentAsString
         then:
-        def invoiceResult = inMemoryDataBase.getById(invoice.id)
+        def invoiceResult = database.getById(invoice.id)
         invoiceResult.isEmpty()
     }
 }
