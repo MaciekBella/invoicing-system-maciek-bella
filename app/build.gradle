@@ -14,6 +14,7 @@ buildscript {
         springFoxStarterVersion = '3.0.0'
         springDependencyersMenagmentVersion = '1.0.11.RELEASE'
         springFramevorkBootVersion = '2.7.6'
+        mongoVersion = '3.12.8'
     }
 }
 plugins {
@@ -39,6 +40,7 @@ dependencies {
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
     runtimeOnly "com.h2database:h2:${h2Version}"
+    implementation "org.mongodb:mongo-java-driver:${mongoVersion}"
 
     implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
     implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
@@ -76,6 +78,7 @@ jacocoTestReport {
 
                     ['pl/futurecollars/invoicing/db/FileBasedDatabase.class',
                      'pl/futurecollars/invoicing/db/IdService.class',
+                     'pl/futurecollars/invoicing/db/DatabaseConfigurator.class',
                      'pl/futurecollars/invoicing/utils/FileService.class'])
         }))
     }
@@ -128,5 +131,11 @@ task testWithJPADatabase(type: Test) {
     systemProperty 'spring.profiles.active', 'jpa'
     useJUnitPlatform()
 }
+task testWithMongoDatabase(type: Test) {
+    systemProperty 'spring.profiles.active', 'mongo'
+    useJUnitPlatform()
+}
+
 check.dependsOn testWithMemoryDatabase
 check.dependsOn testWithJPADatabase
+check.dependsOn testWithMongoDatabase
