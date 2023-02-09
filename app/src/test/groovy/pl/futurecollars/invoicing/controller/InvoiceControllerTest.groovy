@@ -1,14 +1,17 @@
 package pl.futurecollars.invoicing.controller
 
+import com.mongodb.client.MongoDatabase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.ApplicationContext
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import pl.futurecollars.invoicing.db.DataBase
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.utils.JsonService
+import spock.lang.Requires
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -29,6 +32,17 @@ class InvoiceControllerTest extends Specification {
     private JsonService jsonService
     @Autowired
     private DataBase database
+
+
+    @Autowired
+    private ApplicationContext context
+
+    @Requires({ System.getProperty('spring.profiles.active', 'memory').contains("mongo") })
+    def "database is dropped to ensure clean state"() {
+        expect:
+        MongoDatabase mongoDatabase = context.getBean(MongoDatabase)
+        mongoDatabase.drop()
+    }
 
     def cleanup() {
         database.getAll().forEach(invoice -> database.delete(invoice.getId()))
