@@ -2,7 +2,6 @@ package pl.futurecollars.invoicing.db.mongo
 
 import com.mongodb.client.FindIterable
 import com.mongodb.client.MongoCollection
-import org.bson.Document
 import org.mockito.Mockito
 import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
@@ -17,7 +16,7 @@ class MongoDatabaseTest extends Specification {
 
     def setup() {
         mongoIdProvider = Mockito.mock(MongoIdProvider.class)
-        invoiceMongoCollection = Mockito.mock(MongoCollection.class)
+        invoiceMongoCollection = Stub()
         mongoDatabase = new MongoDatabase(invoiceMongoCollection, mongoIdProvider)
     }
 
@@ -34,16 +33,16 @@ class MongoDatabaseTest extends Specification {
     def "should get by id invoice"() {
         given:
         def invoice = TestHelpers.invoice(1)
-        FindIterable<Invoice> invoices = Mockito.mock(FindIterable.class)
-        Mockito.when(invoiceMongoCollection.find(new Document("_id",1))).thenReturn(invoices)
-        Mockito.when(invoices.first()).thenReturn(invoice)
+        invoiceMongoCollection.find(_) >> Stub(FindIterable.class) {
+            it.first() >> invoice
+        }
         when:
         def result = mongoDatabase.getById(1)
         then:
         result.isPresent()
         result.get() == invoice
-
     }
+
     def "should update invoice"() {
         given:
         def invoice = TestHelpers.invoice(1)
