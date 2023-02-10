@@ -2,22 +2,23 @@ package pl.futurecollars.invoicing.db.mongo
 
 import com.mongodb.client.FindIterable
 import com.mongodb.client.MongoCollection
-import org.bson.Document
 import org.mockito.Mockito
 import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
 
+import java.time.LocalDate
+
 class MongoDatabaseTest extends Specification {
 
-    private MongoDatabase mongoDatabase;
-    private MongoIdProvider mongoIdProvider;
-    private MongoCollection<Invoice> invoiceMongoCollection;
+    private MongoDatabase mongoDatabase
+    private MongoIdProvider mongoIdProvider
+    private MongoCollection<Invoice> invoiceMongoCollection
 
 
     def setup() {
         mongoIdProvider = Mockito.mock(MongoIdProvider.class)
-        invoiceMongoCollection = Mockito.mock(MongoCollection.class)
+        invoiceMongoCollection = Stub()
         mongoDatabase = new MongoDatabase(invoiceMongoCollection, mongoIdProvider)
     }
 
@@ -34,9 +35,7 @@ class MongoDatabaseTest extends Specification {
     def "should get by id invoice"() {
         given:
         def invoice = TestHelpers.invoice(1)
-        FindIterable<Invoice> invoices = Mockito.mock(FindIterable.class)
-        Mockito.when(invoiceMongoCollection.find(new Document("_id",1))).thenReturn(invoices)
-        Mockito.when(invoices.first()).thenReturn(invoice)
+        invoiceMongoCollection.find(_) >> Stub(FindIterable.class) { it.first() >> invoice }
         when:
         def result = mongoDatabase.getById(1)
         then:
@@ -44,13 +43,32 @@ class MongoDatabaseTest extends Specification {
         result.get() == invoice
 
     }
+
     def "should update invoice"() {
         given:
         def invoice = TestHelpers.invoice(1)
         def updateInvoice = TestHelpers.invoice(2)
         updateInvoice.id = 1
-        Mockito.when(invoiceRepository.findById(1)).thenReturn(Optional.of(invoice))
+        invoiceMongoCollection.findOneAndReplace(_, invoice) >> Stub(FindIterable.class)
         expect:
-        jpaDatabase.update(1, updateInvoice)
+        mongoDatabase.update(1, updateInvoice)
+    }
+    def "should get all invoice"() {
+        given:
+        def invoice = TestHelpers.invoice(1)
+        invoiceMongoCollection.find() >> Stub(FindIterable.class) {
+            it.spliterator() >> [invoice].spliterator()}
+        when:
+        def result = mongoDatabase.getAll()
+        then:
+        result.buyer.name == ["RW INVEST Sp. z o.o"]
+        result.date == [LocalDate.now()]
+    }
+    def "should delete invoice"() {
+        given:
+        def invoice = TestHelpers.invoice(1)
+        invoiceMongoCollection.findOneAndReplace(_, invoice) >> Stub(FindIterable.class)
+        expect:
+        mongoDatabase.delete(1)
     }
 }
