@@ -33,6 +33,9 @@ public class Invoice {
   @ApiModelProperty(value = "invoice date -> generated", required = true, example = "2022-12-08")
   private LocalDate date;
 
+  @ApiModelProperty(value = "invoice date -> generated", required = true, example = "2022-12-08")
+  private String number;
+
   @JoinColumn(name = "buyer")
   @OneToOne(cascade = ALL)
   @ApiModelProperty(value = "invoice buyer who buy product|services", required = true)

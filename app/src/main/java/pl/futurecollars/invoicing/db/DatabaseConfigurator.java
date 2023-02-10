@@ -47,6 +47,13 @@ public class DatabaseConfigurator {
     return new InMemoryDataBase();
   }
 
+  @Bean
+  @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "jpa")
+  public DataBase jpaDatabase(InvoiceRepository invoiceRepository) {
+    log.debug("Creating jpa database");
+    return new JpaDatabase(invoiceRepository);
+  }
+
   @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "withsql")
   @Bean
   public DataBase sqlDatabase(JdbcTemplate jdbcTemplate) {
