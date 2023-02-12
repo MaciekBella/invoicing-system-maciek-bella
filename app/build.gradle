@@ -79,6 +79,8 @@ jacocoTestReport {
                     ['pl/futurecollars/invoicing/db/FileBasedDatabase.class',
                      'pl/futurecollars/invoicing/db/IdService.class',
                      'pl/futurecollars/invoicing/db/DatabaseConfigurator.class',
+                     'pl/futurecollars/invoicing/db/mongo/MongoDatabaseConfigurator.class',
+                     'pl/futurecollars/invoicing/db/mongo/MongoIdProvider.class',
                      'pl/futurecollars/invoicing/utils/FileService.class'])
         }))
     }
@@ -103,6 +105,8 @@ jacocoTestCoverageVerification {
                     ['pl/futurecollars/invoicing/db/FileBasedDatabase.class',
                      'pl/futurecollars/invoicing/db/IdService.class',
                      'pl/futurecollars/invoicing/db/DatabaseConfigurator.class',
+                     'pl/futurecollars/invoicing/db/mongo/MongoDatabaseConfigurator.class',
+                     'pl/futurecollars/invoicing/db/mongo/MongoIdProvider.class',
                      'pl/futurecollars/invoicing/utils/FileService.class'])
         }))
     }

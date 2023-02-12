@@ -33,17 +33,6 @@ class InvoiceControllerTest extends Specification {
     @Autowired
     private DataBase database
 
-
-    @Autowired
-    private ApplicationContext context
-
-    @Requires({ System.getProperty('spring.profiles.active', 'memory').contains("mongo") })
-    def "database is dropped to ensure clean state"() {
-        expect:
-        MongoDatabase mongoDatabase = context.getBean(MongoDatabase)
-        mongoDatabase.drop()
-    }
-
     def cleanup() {
         database.getAll().forEach(invoice -> database.delete(invoice.getId()))
     }

@@ -2,12 +2,12 @@ package pl.futurecollars.invoicing.db.mongo
 
 import com.mongodb.client.FindIterable
 import com.mongodb.client.MongoCollection
+import org.bson.conversions.Bson
 import org.mockito.Mockito
 import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
 
-import java.time.LocalDate
 
 class MongoDatabaseTest extends Specification {
 
@@ -41,7 +41,6 @@ class MongoDatabaseTest extends Specification {
         then:
         result.isPresent()
         result.get() == invoice
-
     }
 
     def "should update invoice"() {
@@ -53,21 +52,24 @@ class MongoDatabaseTest extends Specification {
         expect:
         mongoDatabase.update(1, updateInvoice)
     }
+
     def "should get all invoice"() {
         given:
         def invoice = TestHelpers.invoice(1)
         invoiceMongoCollection.find() >> Stub(FindIterable.class) {
-            it.spliterator() >> [invoice].spliterator()}
+            it.spliterator() >> [invoice].spliterator()
+        }
         when:
         def result = mongoDatabase.getAll()
         then:
         result.buyer.name == ["RW INVEST Sp. z o.o"]
-        result.date == [LocalDate.now()]
+        result.seller.address == ["ul. Lączna 43 03-156 Lipinki, Polska"]
     }
+
     def "should delete invoice"() {
         given:
         def invoice = TestHelpers.invoice(1)
-        invoiceMongoCollection.findOneAndReplace(_, invoice) >> Stub(FindIterable.class)
+        invoiceMongoCollection.findOneAndDelete(1L as Bson)
         expect:
         mongoDatabase.delete(1)
     }
