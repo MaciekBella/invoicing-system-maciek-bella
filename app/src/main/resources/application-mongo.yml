@@ -3,7 +3,7 @@ invoice:
     type: mongo
 
 
-Invoicing-system:
+invoicing-system:
   database: mongo
   database.name: invoices
   database.collection: invoices
