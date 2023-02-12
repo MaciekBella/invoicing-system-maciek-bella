@@ -39,7 +39,12 @@ public class MongoDatabase implements DataBase {
   @Override
   public void update(long id, Invoice invoice) {
     invoice.setId(id);
-    invoices.findOneAndReplace(idFilter(id), invoice);
+
+    if (invoices.findOneAndReplace(idFilter(id), invoice) == null) {
+      throw new IllegalArgumentException("Invoice with id: " + id + " does not exist in database");
+    } else {
+      invoices.findOneAndReplace(idFilter(id), invoice);
+    }
   }
 
   @Override

@@ -48,10 +48,24 @@ class MongoDatabaseTest extends Specification {
         def invoice = TestHelpers.invoice(1)
         def updateInvoice = TestHelpers.invoice(2)
         updateInvoice.id = 1
-        invoiceMongoCollection.findOneAndReplace(_, invoice) >> Stub(FindIterable.class)
+        invoiceMongoCollection.findOneAndReplace(_,invoice) >> Stub(FindIterable.class)
         expect:
         mongoDatabase.update(1, updateInvoice)
     }
+
+    def "should throw exception when not found"() {
+        given:
+        def invoice = TestHelpers.invoice(1)
+        def updateInvoice = TestHelpers.invoice(2)
+        updateInvoice.id = 1
+        invoiceMongoCollection.findOneAndReplace(_, _) >> null
+        when:
+        mongoDatabase.update(1, updateInvoice)
+        then:
+        def ex = thrown(IllegalArgumentException.class)
+        ex.message == "Invoice with id: 1 does not exist in database"
+    }
+
 
     def "should get all invoice"() {
         given:
