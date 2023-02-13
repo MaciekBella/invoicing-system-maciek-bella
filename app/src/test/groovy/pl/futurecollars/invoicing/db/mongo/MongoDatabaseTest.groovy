@@ -8,13 +8,11 @@ import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
 
-
 class MongoDatabaseTest extends Specification {
 
     private MongoDatabase mongoDatabase
     private MongoIdProvider mongoIdProvider
     private MongoCollection<Invoice> invoiceMongoCollection
-
 
     def setup() {
         mongoIdProvider = Mockito.mock(MongoIdProvider.class)
@@ -48,7 +46,7 @@ class MongoDatabaseTest extends Specification {
         def invoice = TestHelpers.invoice(1)
         def updateInvoice = TestHelpers.invoice(2)
         updateInvoice.id = 1
-        invoiceMongoCollection.findOneAndReplace(_,invoice) >> Stub(FindIterable.class)
+        invoiceMongoCollection.findOneAndReplace(_, invoice) >> Stub(FindIterable.class)
         expect:
         mongoDatabase.update(1, updateInvoice)
     }

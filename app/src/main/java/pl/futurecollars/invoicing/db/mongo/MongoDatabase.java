@@ -42,8 +42,6 @@ public class MongoDatabase implements DataBase {
 
     if (invoices.findOneAndReplace(idFilter(id), invoice) == null) {
       throw new IllegalArgumentException("Invoice with id: " + id + " does not exist in database");
-    } else {
-      invoices.findOneAndReplace(idFilter(id), invoice);
     }
   }
 
