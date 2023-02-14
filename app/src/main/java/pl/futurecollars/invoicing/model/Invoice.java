@@ -46,12 +46,9 @@ public class Invoice {
   @JoinColumn(name = "invoice_invoice_entry")
   @OneToMany(cascade = ALL, orphanRemoval = true, fetch = FetchType.EAGER)
   @ApiModelProperty(value = "list of products|services", required = true)
-  private List<InvoiceEntry> entries;
+  private List<InvoiceEntry> invoiceEntries;
 
-  public Invoice(LocalDate date, Company buyer, Company seller, List<InvoiceEntry> entries) {
-    this.date = date;
-    this.buyer = buyer;
-    this.seller = seller;
-    this.entries = entries;
-  }
+  @ApiModelProperty(value = "Invoice number (assigned by user)", required = true, example = "2022/10/12/00123")
+  private String number;
+
 }

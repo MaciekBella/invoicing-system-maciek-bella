@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import pl.futurecollars.invoicing.utils.FileService;
 import pl.futurecollars.invoicing.utils.JsonService;
 
@@ -51,5 +52,12 @@ public class DatabaseConfigurator {
   public DataBase jpaDatabase(InvoiceRepository invoiceRepository) {
     log.debug("Creating jpa database");
     return new JpaDatabase(invoiceRepository);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "database.type", havingValue = "sql")
+  public DataBase sqlDatabase(JdbcTemplate jdbcTemplate) {
+    log.info("Running on sql database");
+    return new SqlDatabase(jdbcTemplate);
   }
 }
