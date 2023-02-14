@@ -27,6 +27,7 @@ public class Company {
   @ApiModelProperty(value = "Tax identification number", required = true, example = "552-168-00")
   private String taxIdentificationNumber;
 
+  @JsonIgnore
   @ApiModelProperty(value = "Company address", required = true, example = "ul.Mazowiecka 134, 32-525 Radzionkow")
   private String address;
 

@@ -24,4 +24,4 @@ spring:
   profiles:
     active: dev
   flyway:
-    enabled: false
+    enabled: true

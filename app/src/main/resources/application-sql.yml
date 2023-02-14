@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/Invoicing
+    url: jdbc:postgresql://localhost:5432/invoicing
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -8,4 +8,4 @@ spring:
     enabled: true
 
 invoicing-system:
-  database: memory
+  database: withsql
