@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.futurecollars.invoicing.db.DataBase;
+import pl.futurecollars.invoicing.model.Company;
 import pl.futurecollars.invoicing.model.Invoice;
 
 @Configuration
@@ -49,12 +50,22 @@ public class MongoDatabaseConfigurator {
 
   @Bean
   @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "mongo")
-  public DataBase mongoDatabase(
+  public DataBase<Invoice> mongoDatabase(
       @Value("${invoicing-system.database.collection}") String collectionName,
       MongoDatabase mongoDb,
       MongoIdProvider mongoIdProvider
   ) {
     MongoCollection<Invoice> collection = mongoDb.getCollection(collectionName, Invoice.class);
-    return new pl.futurecollars.invoicing.db.mongo.MongoDatabase(collection, mongoIdProvider);
+    return new pl.futurecollars.invoicing.db.mongo.MongoDatabase<>(collection, mongoIdProvider);
+  }
+
+  @Bean
+  public DataBase<Company> companyMongoDatabase(
+      @Value("${invoicing-system.database.company.collection}") String collectionName,
+      MongoDatabase mongoDb,
+      MongoIdProvider mongoIdProvider
+  ) {
+    MongoCollection<Company> collection = mongoDb.getCollection(collectionName, Company.class);
+    return new pl.futurecollars.invoicing.db.mongo.MongoDatabase<>(collection, mongoIdProvider);
   }
 }

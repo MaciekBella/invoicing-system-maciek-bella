@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Company {
+public class Company implements WithId {
 
   @Id
   @JsonIgnore

@@ -28,7 +28,7 @@ class InvoiceControllerTest extends Specification {
     @Autowired
     private JsonService jsonService
     @Autowired
-    private DataBase database
+    private DataBase<Invoice> database
 
     def cleanup() {
         database.getAll().forEach(invoice -> database.delete(invoice.getId()))
@@ -104,7 +104,7 @@ class InvoiceControllerTest extends Specification {
         then:
         def savedInvoice = database.getById(result as Long)
         savedInvoice.isPresent()
-        savedInvoice.get().id == result as Long
+        savedInvoice.get().id== result as Long
         savedInvoice.get().buyer.taxIdentificationNumber == '1'
     }
 

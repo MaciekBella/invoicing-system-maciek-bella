@@ -1,7 +1,7 @@
-package pl.futurecollars.invoicing.db
+package pl.futurecollars.invoicing.db.memory
 
 import pl.futurecollars.invoicing.db.DataBase
-import pl.futurecollars.invoicing.db.InMemoryDataBase
+import pl.futurecollars.invoicing.db.memory.InMemoryDatabase
 import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
 
@@ -9,11 +9,11 @@ import static pl.futurecollars.invoicing.TestHelpers.invoice
 
 class InMemoryDataBaseTest extends Specification {
 
-    private DataBase database
+    private DataBase<Invoice> database
     private List<Invoice> invoices
 
     def setup() {
-        database = new InMemoryDataBase()
+        database = new InMemoryDatabase()
 
         invoices = (1..12).collect { invoice(it) }
     }

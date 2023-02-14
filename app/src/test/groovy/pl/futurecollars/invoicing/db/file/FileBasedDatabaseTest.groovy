@@ -1,4 +1,4 @@
-package pl.futurecollars.invoicing.db
+package pl.futurecollars.invoicing.db.file
 
 import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
