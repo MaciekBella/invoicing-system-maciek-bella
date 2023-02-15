@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -23,14 +24,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Invoice {
+public class Invoice implements WithId {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "invoice id -> generated", required = true, example = "1")
-  private long id;
+  private Long id;
 
-  @ApiModelProperty(value = "invoice date -> generated", required = true, example = "2022-12-08")
+  @ApiModelProperty(value = "invoice date -> generated", required = true)
   private LocalDate date;
 
   @JoinColumn(name = "buyer")
@@ -43,15 +44,9 @@ public class Invoice {
   @ApiModelProperty(value = "invoice company who is selling the product|services", required = true)
   private Company seller;
 
-  @JoinColumn(name = "invoice_invoice_entry")
+  @JoinTable(name = "invoice_invoice_entry", inverseJoinColumns = @JoinColumn(name = "invoice_entry_id"))
   @OneToMany(cascade = ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-  @ApiModelProperty(value = "list of products|services", required = true)
+  @ApiModelProperty(value = "List of products/services", required = true)
   private List<InvoiceEntry> entries;
 
-  public Invoice(LocalDate date, Company buyer, Company seller, List<InvoiceEntry> entries) {
-    this.date = date;
-    this.buyer = buyer;
-    this.seller = seller;
-    this.entries = entries;
-  }
 }

@@ -13,7 +13,7 @@ import pl.futurecollars.invoicing.model.InvoiceEntry;
 @AllArgsConstructor
 public class TaxCalculatorService {
 
-  private final DataBase dataBase;
+  private final DataBase<Invoice> dataBase;
 
   public BigDecimal income(String taxIdentificationNumber) {
     return visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);

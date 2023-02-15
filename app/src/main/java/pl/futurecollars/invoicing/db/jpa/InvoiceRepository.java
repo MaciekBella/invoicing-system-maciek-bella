@@ -1,4 +1,4 @@
-package pl.futurecollars.invoicing.db;
+package pl.futurecollars.invoicing.db.jpa;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

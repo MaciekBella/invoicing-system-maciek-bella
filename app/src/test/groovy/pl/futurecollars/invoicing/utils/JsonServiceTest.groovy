@@ -36,7 +36,7 @@ class JsonServiceTest extends Specification {
         when:
         def result = jsonService.toJson(companyInJson)
         then:
-        result == "{\"taxIdentificationNumber\":\"0\",\"address\":\"ul. Lączna 43 03-156 Lipinki, Polska\",\"name\":\"RW INVEST Sp. z o.o\"}"
+        result == "{\"id\":null,\"taxIdentificationNumber\":\"0\",\"address\":\"ul. Lączna 43 03-156 Lipinki, Polska\",\"name\":\"RW INVEST Sp. z o.o\"}"
 
     }
 }

@@ -10,11 +10,11 @@ import pl.futurecollars.invoicing.model.Invoice;
 @Service
 public class InvoiceService {
 
-  private final DataBase dataBase;
+  private final DataBase<Invoice> dataBase;
 
   @Autowired
-  public InvoiceService(DataBase dataBase) {
-    this.dataBase = dataBase;
+  public InvoiceService(DataBase<Invoice> database) {
+    this.dataBase = database;
   }
 
   public long save(Invoice invoice) {
@@ -30,6 +30,7 @@ public class InvoiceService {
   }
 
   public void update(long id, Invoice updatedInvoice) {
+    updatedInvoice.setId(id);
     dataBase.update(id, updatedInvoice);
   }
 

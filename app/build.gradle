@@ -76,9 +76,11 @@ jacocoTestReport {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude:
 
-                    ['pl/futurecollars/invoicing/db/FileBasedDatabase.class',
-                     'pl/futurecollars/invoicing/db/IdService.class',
-                     'pl/futurecollars/invoicing/db/DatabaseConfigurator.class',
+                    ['pl/futurecollars/invoicing/db/file/FileBasedDatabase.class',
+                     'pl/futurecollars/invoicing/db/file/IdService.class',
+                     'pl/futurecollars/invoicing/db/file/FileBasedDatabaseConfiguration.class',
+                     'pl/futurecollars/invoicing/db/jpa/JpaDatabaseConfiguration.class',
+                     'pl/futurecollars/invoicing/db/memory/InMemoryDatabaseConfiguration.class',
                      'pl/futurecollars/invoicing/db/mongo/MongoDatabaseConfigurator.class',
                      'pl/futurecollars/invoicing/db/mongo/MongoIdProvider.class',
                      'pl/futurecollars/invoicing/utils/FileService.class'])
@@ -102,9 +104,11 @@ jacocoTestCoverageVerification {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude:
 
-                    ['pl/futurecollars/invoicing/db/FileBasedDatabase.class',
-                     'pl/futurecollars/invoicing/db/IdService.class',
-                     'pl/futurecollars/invoicing/db/DatabaseConfigurator.class',
+                    ['pl/futurecollars/invoicing/db/file/FileBasedDatabase.class',
+                     'pl/futurecollars/invoicing/db/file/IdService.class',
+                     'pl/futurecollars/invoicing/db/file/FileBasedDatabaseConfiguration.class',
+                     'pl/futurecollars/invoicing/db/jpa/JpaDatabaseConfiguration.class',
+                     'pl/futurecollars/invoicing/db/memory/InMemoryDatabaseConfiguration.class',
                      'pl/futurecollars/invoicing/db/mongo/MongoDatabaseConfigurator.class',
                      'pl/futurecollars/invoicing/db/mongo/MongoIdProvider.class',
                      'pl/futurecollars/invoicing/utils/FileService.class'])

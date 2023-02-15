@@ -1,7 +1,10 @@
-package pl.futurecollars.invoicing.db
+package pl.futurecollars.invoicing.db.jpa
 
 import org.mockito.Mockito
 import pl.futurecollars.invoicing.TestHelpers
+import pl.futurecollars.invoicing.db.jpa.InvoiceRepository
+import pl.futurecollars.invoicing.db.jpa.JpaDatabase
+import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -9,7 +12,7 @@ import java.time.LocalDate
 
 class JpaDatabaseTest extends Specification {
 
-    private JpaDatabase jpaDatabase
+    private JpaDatabase<Invoice> jpaDatabase
     private InvoiceRepository invoiceRepository
 
     def setup() {

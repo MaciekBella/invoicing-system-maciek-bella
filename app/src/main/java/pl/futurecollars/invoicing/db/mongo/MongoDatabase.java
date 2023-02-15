@@ -8,36 +8,36 @@ import java.util.stream.StreamSupport;
 import lombok.AllArgsConstructor;
 import org.bson.Document;
 import pl.futurecollars.invoicing.db.DataBase;
-import pl.futurecollars.invoicing.model.Invoice;
+import pl.futurecollars.invoicing.model.WithId;
 
 @AllArgsConstructor
-public class MongoDatabase implements DataBase {
+public class MongoDatabase<T extends WithId> implements DataBase<T> {
 
-  private final MongoCollection<Invoice> invoices;
+  private final MongoCollection<T> invoices;
   private final MongoIdProvider idProvider;
 
   @Override
-  public long save(Invoice invoice) {
-    invoice.setId(idProvider.getNextIdAndIncrement());
-    invoices.insertOne(invoice);
+  public long save(T item) {
+    item.setId(idProvider.getNextIdAndIncrement());
+    invoices.insertOne(item);
 
-    return invoice.getId();
+    return item.getId();
   }
 
   @Override
-  public Optional<Invoice> getById(long id) {
+  public Optional<T> getById(long id) {
     return Optional.ofNullable(invoices.find(idFilter(id)).first());
   }
 
   @Override
-  public List<Invoice> getAll() {
+  public List<T> getAll() {
     return StreamSupport
         .stream(invoices.find().spliterator(), false)
         .collect(Collectors.toList());
   }
 
   @Override
-  public void update(long id, Invoice invoice) {
+  public void update(long id, T invoice) {
     invoice.setId(id);
 
     if (invoices.findOneAndReplace(idFilter(id), invoice) == null) {

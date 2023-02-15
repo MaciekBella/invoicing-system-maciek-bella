@@ -1,14 +1,7 @@
-package pl.futurecollars.invoicing.db
+package pl.futurecollars.invoicing.db.file
 
-import pl.futurecollars.invoicing.db.DataBase
-import pl.futurecollars.invoicing.db.FileBasedDatabase
-import pl.futurecollars.invoicing.db.IdService
-import pl.futurecollars.invoicing.utils.FileService
+
 import spock.lang.Specification
-
-import java.nio.file.Files
-import java.nio.file.NoSuchFileException
-import java.nio.file.Path
 
 class IdServiceTest extends Specification {
 

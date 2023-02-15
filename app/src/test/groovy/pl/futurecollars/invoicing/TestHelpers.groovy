@@ -36,11 +36,12 @@ class TestHelpers {
     }
 
     static invoiceWithNIP(String nip) {
-        new Invoice(
-                LocalDate.now(),
-                companyWithNIP(nip),
-                companyWithNIP(nip),
-                List.of(product(5)))
+        Invoice.builder()
+                .date(LocalDate.now())
+                .seller(companyWithNIP(nip))
+                .buyer(companyWithNIP(nip))
+                .entries(List.of(product(5)))
+                .build()
     }
 
     static companyWithNIP(String nip) {
