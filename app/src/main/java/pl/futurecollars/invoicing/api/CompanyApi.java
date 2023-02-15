@@ -15,13 +15,13 @@ import pl.futurecollars.invoicing.model.Company;
 @Api(tags = {"company-controller"})
 public interface CompanyApi {
 
-  @ApiOperation(value = "Add company")
   @PostMapping
+  @ApiOperation(value = "Add company")
   long add(@RequestBody Company company);
 
-  @ApiOperation(value = "Get all companies")
   @GetMapping
-  List<Company> getAll();
+  @ApiOperation(value = "Get All companies")
+  List<Company> getAllCompanies();
 
   @GetMapping("/{id}")
   @ApiOperation(value = "Get company by Id")
@@ -32,8 +32,7 @@ public interface CompanyApi {
   void update(@PathVariable long id, @RequestBody Company company);
 
   @DeleteMapping("/{id}")
-  @ApiOperation(value = "Delete invoice by Id")
+  @ApiOperation(value = "Delete company by Id")
   void delete(@PathVariable long id);
-
 }
 

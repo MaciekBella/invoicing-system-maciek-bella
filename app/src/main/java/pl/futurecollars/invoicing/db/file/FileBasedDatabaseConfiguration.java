@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.futurecollars.invoicing.db.DataBase;
@@ -28,6 +29,7 @@ public class FileBasedDatabaseConfiguration {
   }
 
   @Bean
+  @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "file")
   public DataBase<Invoice> invoiceFileBasedDatabase(
       IdService idProvider,
       FileService filesService,
@@ -40,6 +42,7 @@ public class FileBasedDatabaseConfiguration {
   }
 
   @Bean
+  @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "file")
   public DataBase<Company> companyFileBasedDatabase(
       IdService idProvider,
       FileService filesService,

@@ -19,6 +19,7 @@ public class InMemoryDatabaseConfiguration {
     return new InMemoryDatabase<>();
   }
 
+  @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "memory")
   @Bean
   public DataBase<Company> companyInMemoryDatabase() {
     return new InMemoryDatabase<>();

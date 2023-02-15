@@ -30,6 +30,7 @@ public class InvoiceService {
   }
 
   public void update(long id, Invoice updatedInvoice) {
+    updatedInvoice.setId(id);
     dataBase.update(id, updatedInvoice);
   }
 

@@ -1,6 +1,7 @@
 package pl.futurecollars.invoicing.service
 
 import pl.futurecollars.invoicing.db.DataBase
+import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
 
 import static pl.futurecollars.invoicing.TestHelpers.invoice
@@ -8,7 +9,7 @@ import static pl.futurecollars.invoicing.TestHelpers.invoice
 class InvoiceServiceUnitTest extends Specification {
 
     private InvoiceService service
-    private DataBase dataBase
+    private DataBase<Invoice> dataBase
 
     def setup() {
         dataBase = Mock()
@@ -53,8 +54,8 @@ class InvoiceServiceUnitTest extends Specification {
         given:
         def invoice = invoice(1)
         when:
-        service.update(invoice.getId(), invoice)
+        service.update(1, invoice)
         then:
-        1 * dataBase.update(invoice.getId(), invoice)
+        1 * dataBase.update(1, invoice)
     }
 }

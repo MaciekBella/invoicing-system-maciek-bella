@@ -7,4 +7,5 @@ invoicing-system:
   database: mongo
   database.name: invoices
   database.collection: invoices
+  database.company.collection: companies
   database.counter.collection: counter

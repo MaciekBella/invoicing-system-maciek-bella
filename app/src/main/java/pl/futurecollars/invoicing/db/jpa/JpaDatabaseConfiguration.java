@@ -19,6 +19,7 @@ public class JpaDatabaseConfiguration {
     return new JpaDatabase<>(invoiceRepository);
   }
 
+  @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "jpa")
   @Bean
   public DataBase<Company> companyJpaDatabase(CompanyRepository repository) {
     return new JpaDatabase<>(repository);
